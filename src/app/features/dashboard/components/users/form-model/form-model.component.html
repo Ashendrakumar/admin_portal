@@ -1,0 +1,183 @@
+@if (isOpen) {
+  <div class="overlay" (click)="onClose()" role="presentation">
+    <div
+      class="modal"
+      (click)="$event.stopPropagation()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'modal-title'"
+    >
+      <!-- Header -->
+      <div class="modal__header">
+        <div class="modal__title-group">
+          <div class="modal__icon">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              @if (editUser) {
+                <path
+                  d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                />
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                />
+              } @else {
+                <path d="M12 5v14M5 12h14" />
+              }
+            </svg>
+          </div>
+          <h2 id="modal-title" class="modal__title">
+            {{ editUser ? "Edit User" : "Add New User" }}
+          </h2>
+        </div>
+        <button
+          class="btn btn-ghost btn-icon"
+          (click)="onClose()"
+          aria-label="Close modal"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="modal__body">
+          <div class="form-row">
+            <!-- First Name -->
+            <div class="form-group" [class.has-error]="isInvalid('first_name')">
+              <label for="first_name">First Name</label>
+              <input
+                id="first_name"
+                formControlName="first_name"
+                placeholder="Enter first name"
+                type="text"
+                autocomplete="given-name"
+              />
+              @if (isInvalid("first_name")) {
+                <span class="form-error">First name is required</span>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group" [class.has-error]="isInvalid('last_name')">
+              <label for="last_name">Last Name</label>
+              <input
+                id="last_name"
+                formControlName="last_name"
+                placeholder="Enter last name"
+                type="text"
+                autocomplete="family-name"
+              />
+              @if (isInvalid("last_name")) {
+                <span class="form-error">Last name is required</span>
+              }
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group" [class.has-error]="isInvalid('email')">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              formControlName="email"
+              placeholder="user@company.com"
+              type="email"
+              autocomplete="email"
+            />
+            @if (isInvalid("email")) {
+              <span class="form-error">
+                @if (form.get("email")?.errors?.["required"]) {
+                  Email is required
+                } @else {
+                  Please enter a valid email
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-row">
+            <!-- Role -->
+            <div class="form-group" [class.has-error]="isInvalid('role')">
+              <label for="role">Role</label>
+              <select id="role" formControlName="role">
+                <option value="">Select role...</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="viewer">Viewer</option>
+              </select>
+              @if (isInvalid("role")) {
+                <span class="form-error">Please select a role</span>
+              }
+            </div>
+
+            <!-- Department -->
+            <div class="form-group" [class.has-error]="isInvalid('department')">
+              <label for="department">Department</label>
+              <select id="department" formControlName="department">
+                <option value="">Select department...</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales">Sales</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Operations">Operations</option>
+              </select>
+              @if (isInvalid("department")) {
+                <span class="form-error">Please select a department</span>
+              }
+            </div>
+          </div>
+
+          <!-- Job Title -->
+          <div class="form-group">
+            <label for="job">Job Title</label>
+            <input
+              id="job"
+              formControlName="job"
+              placeholder="e.g. Senior Developer"
+              type="text"
+            />
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal__footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="isSaving"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid || isSaving"
+          >
+            @if (isSaving) {
+              <app-loader size="sm"></app-loader>
+            }
+            {{ editUser ? "Save Changes" : "Create User" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,204 @@
+<div class="page animate-fade-in">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header__left">
+      <h1 class="page-title">User Management</h1>
+      <p class="page-subtitle">
+        Manage your team — {{ pagination.total }} members total
+      </p>
+    </div>
+    <div class="page-header__right">
+      <button class="btn btn-secondary btn-sm" (click)="loadUsers()">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="23 4 23 10 17 10" />
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+        </svg>
+        Refresh
+      </button>
+      <button class="btn btn-primary" (click)="openAddModal()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Add User
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-card card">
+        <div
+          class="stat-card__icon"
+          [style.background]="stat.bg"
+          [style.color]="stat.color"
+        >
+          <span [innerHTML]="stat.icon"></span>
+        </div>
+        <div class="stat-card__body">
+          <p class="stat-card__value">{{ stat.value }}</p>
+          <p class="stat-card__label">{{ stat.label }}</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Table Card -->
+  <div class="card">
+    <!-- Toolbar -->
+    <div class="table-toolbar">
+      <app-search-input
+        placeholder="Search by name or email..."
+        (search)="onSearch($event)"
+      />
+      <div class="toolbar-filters">
+        <select class="filter-select" (change)="onRoleFilter($event)">
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+        <select class="filter-select" (change)="onStatusFilter($event)">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <app-common-table
+      [columns]="columns"
+      [data]="filteredUsers()"
+      [isLoading]="isLoading()"
+      [sort]="sort"
+      [pagination]="pagination"
+      [showActions]="true"
+      trackByKey="id"
+      (sortChange)="onSort($event)"
+      (pageChange)="onPageChange($event)"
+    >
+      <!-- Custom cell template -->
+      <ng-template #cellTemplate let-row let-column="column">
+        @switch (column.key) {
+          @case ("name") {
+            <div class="user-cell">
+              <img
+                [src]="'https://ui-avatars.com/api/?name=' + row.first_name"
+                [alt]="row.first_name"
+                class="avatar user-avatar"
+                loading="lazy"
+              />
+              <div class="user-cell__info">
+                <p class="user-cell__name">
+                  {{ row.first_name }} {{ row.last_name }}
+                </p>
+                <p class="user-cell__email">{{ row.email }}</p>
+              </div>
+            </div>
+          }
+          @case ("role") {
+            <span class="role-badge" [class]="'role-badge--' + row.role">
+              {{ row.role | titlecase }}
+            </span>
+          }
+          @case ("status") {
+            <span
+              class="badge"
+              [class]="
+                row.status === 'active' ? 'badge-active' : 'badge-inactive'
+              "
+            >
+              {{ row.status | titlecase }}
+            </span>
+          }
+          @case ("department") {
+            <span class="dept-tag">{{ row.department }}</span>
+          }
+          @default {
+            {{ row[column.key] ?? "—" }}
+          }
+        }
+      </ng-template>
+
+      <!-- Row actions template -->
+      <ng-template #rowTemplate let-row>
+        <div class="row-actions">
+          <button
+            class="btn btn-ghost btn-icon btn-md action-btn action-btn--edit"
+            (click)="openEditModal(row)"
+            title="Edit user"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+          </button>
+          <button
+            class="btn btn-ghost btn-icon btn-md action-btn action-btn--delete"
+            (click)="openDeleteModal(row)"
+            title="Delete user"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+            </svg>
+          </button>
+        </div>
+      </ng-template>
+    </app-common-table>
+  </div>
+</div>
+
+<!-- Add / Edit Modal -->
+<app-form-model
+  [isOpen]="isModalOpen()"
+  [editUser]="selectedUser()"
+  [isSaving]="isSaving()"
+  (save)="onSave($event)"
+  (close)="closeModal()"
+/>
+
+<!-- Delete Confirm Dialog -->
+<app-confirm-dialog
+  [isOpen]="isConfirmOpen()"
+  [config]="confirmConfig"
+  [isProcessing]="isDeleting()"
+  (confirmed)="onDeleteConfirmed()"
+  (cancelled)="closeConfirm()"
+/>

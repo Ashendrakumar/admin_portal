@@ -1,3 +1,7 @@
+/**
+ * Production environment configuration
+ * Replace apiUrl with your real backend URL
+ */
 export const environment = {
   production: true,
   apiUrl: 'https://your-production-api.com/api',

@@ -1,0 +1,139 @@
+<div class="table-wrapper">
+  <!-- Loading skeleton -->
+  @if (isLoading) {
+    <div class="table-skeleton">
+      @for (row of skeletonRows; track $index) {
+        <div class="skeleton-row">
+          @for (col of columns; track col.key) {
+            <div class="skeleton" style="height: 20px; flex: 1"></div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Actual table -->
+  @if (!isLoading) {
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            @for (col of columns; track col.key) {
+              <th
+                [style.width]="col.width"
+                [style.text-align]="col.align ?? 'left'"
+                [class.sorted]="sort?.column === col.key"
+                [class.sortable]="col.sortable"
+                (click)="col.sortable && onSort(col.key)"
+              >
+                <span class="th-content">
+                  {{ col.label }}
+                  @if (col.sortable) {
+                    <span class="sort-icon">
+                      @if (sort?.column === col.key) {
+                        {{ sort?.direction === "asc" ? "↑" : "↓" }}
+                      } @else {
+                        <span class="sort-icon--idle">⇅</span>
+                      }
+                    </span>
+                  }
+                </span>
+              </th>
+            }
+            @if (showActions) {
+              <th style="width: 120px; text-align: right">Actions</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @if (data.length === 0) {
+            <tr>
+              <td [attr.colspan]="columns.length + (showActions ? 1 : 0)">
+                <div class="empty-state">
+                  <div class="empty-state__icon">
+                    <svg
+                      width="40"
+                      height="40"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7" />
+                      <path d="M4 13l8 8 8-8" />
+                    </svg>
+                  </div>
+                  <p class="empty-state__title">{{ emptyTitle }}</p>
+                  <p class="empty-state__message">{{ emptyMessage }}</p>
+                </div>
+              </td>
+            </tr>
+          }
+          @for (row of data; track trackByFn($index, row)) {
+            <tr>
+              @for (col of columns; track col.key) {
+                <td [style.text-align]="col.align ?? 'left'">
+                  @if (cellTemplate) {
+                    <ng-container
+                      *ngTemplateOutlet="
+                        cellTemplate;
+                        context: { $implicit: row, column: col }
+                      "
+                    ></ng-container>
+                  } @else {
+                    {{ getCellValue(row, col) }}
+                  }
+                </td>
+              }
+              @if (showActions && rowTemplate) {
+                <td style="text-align: right">
+                  <ng-container
+                    *ngTemplateOutlet="rowTemplate; context: { $implicit: row }"
+                  ></ng-container>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (pagination && pagination.total > 0) {
+      <div class="table-pagination">
+        <span class="pagination__info">
+          Showing
+          <strong>{{ pageStart }}</strong
+          >–<strong>{{ pageEnd }}</strong> of
+          <strong>{{ pagination.total }}</strong> records
+        </span>
+        <div class="pagination__controls">
+          <button
+            class="btn btn-secondary btn-sm"
+            [disabled]="pagination.page === 1"
+            (click)="onPageChange(pagination.page - 1)"
+          >
+            ← Prev
+          </button>
+          @for (p of pageNumbers; track p) {
+            <button
+              class="btn btn-sm"
+              [class.btn-primary]="p === pagination.page"
+              [class.btn-ghost]="p !== pagination.page"
+              (click)="onPageChange(p)"
+            >
+              {{ p }}
+            </button>
+          }
+          <button
+            class="btn btn-secondary btn-sm"
+            [disabled]="pagination.page >= totalPages"
+            (click)="onPageChange(pagination.page + 1)"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>

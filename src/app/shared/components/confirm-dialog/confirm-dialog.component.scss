@@ -1,0 +1,72 @@
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.dialog {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+
+  &--danger {
+    border-color: rgba(244, 63, 94, 0.2);
+  }
+}
+
+.dialog__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+
+  &--danger {
+    background: rgba(244, 63, 94, 0.1);
+    color: var(--color-accent-rose);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+  }
+  &--warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--color-accent-amber);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  &--info {
+    background: var(--color-primary-dim);
+    color: var(--color-primary);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+  }
+}
+
+.dialog__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dialog__message {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.dialog__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+
+  .btn {
+    min-width: 110px;
+  }
+}

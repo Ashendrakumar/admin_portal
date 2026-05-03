@@ -1,0 +1,142 @@
+<div class="overview-page animate-fade-in">
+  <!-- Welcome Section -->
+  <div class="welcome-section card">
+    <div class="welcome-content">
+      <h2 class="welcome-title">Welcome to Secure Admin Portal</h2>
+      <p class="welcome-subtitle">
+        Manage your team, monitor activity, and control access from a single
+        dashboard.
+      </p>
+      <div class="welcome-features">
+        <div class="feature">
+          <span class="feature-icon">🔐</span>
+          <span>Enterprise Security</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⚡</span>
+          <span>Real-time Updates</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">📊</span>
+          <span>Advanced Analytics</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🔔</span>
+          <span>Notifications</span>
+        </div>
+      </div>
+    </div>
+    <div class="welcome-visual">
+      <svg viewBox="0 0 200 200" class="welcome-icon">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop
+              offset="0%"
+              style="stop-color: var(--color-primary); stop-opacity: 1"
+            />
+            <stop
+              offset="100%"
+              style="stop-color: var(--color-accent-cyan); stop-opacity: 1"
+            />
+          </linearGradient>
+        </defs>
+        <rect
+          x="40"
+          y="80"
+          width="120"
+          height="80"
+          rx="8"
+          fill="url(#grad1)"
+          opacity="0.2"
+        />
+        <rect
+          x="50"
+          y="90"
+          width="100"
+          height="60"
+          rx="6"
+          fill="none"
+          stroke="url(#grad1)"
+          stroke-width="2"
+        />
+        <circle cx="100" cy="60" r="20" fill="url(#grad1)" />
+        <path d="M100 40 L105 55 L95 55 Z" fill="url(#grad1)" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    @for (stat of statsData(); track stat.id) {
+      <div class="stat-widget card" [class]="'stat-widget--' + stat.color">
+        <div class="stat-widget__header">
+          <span class="stat-widget__icon" [innerHTML]="stat.icon"></span>
+          <h3 class="stat-widget__title">{{ stat.title }}</h3>
+        </div>
+        <div class="stat-widget__content">
+          <p class="stat-widget__value">{{ stat.value }}</p>
+          <p class="stat-widget__change" [class.positive]="stat.change > 0">
+            <span class="change-icon">{{ stat.change > 0 ? "↑" : "↓" }}</span>
+            {{ Math.abs(stat.change) }}% from last month
+          </p>
+        </div>
+        <div class="stat-widget__chart">
+          <div class="mini-chart">
+            @for (point of stat.chartPoints; track $index) {
+              <div class="chart-bar" [style.height.%]="point"></div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Quick Access -->
+  <div class="quick-section card">
+    <h3 class="section-title">Quick Actions</h3>
+    <div class="quick-actions">
+      <button class="quick-action" routerLink="/dashboard/users">
+        <span class="quick-action__icon">👥</span>
+        <span class="quick-action__label">Manage Users</span>
+        <span class="quick-action__arrow">→</span>
+      </button>
+      <button class="quick-action disabled">
+        <span class="quick-action__icon">🔧</span>
+        <span class="quick-action__label">Settings</span>
+        <span class="quick-action__arrow">→</span>
+      </button>
+      <button class="quick-action disabled">
+        <span class="quick-action__icon">📈</span>
+        <span class="quick-action__label">Reports</span>
+        <span class="quick-action__arrow">→</span>
+      </button>
+      <button class="quick-action disabled">
+        <span class="quick-action__icon">🔔</span>
+        <span class="quick-action__label">Alerts</span>
+        <span class="quick-action__arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="activity-section card">
+    <h3 class="section-title">System Status</h3>
+    <div class="activity-list">
+      @for (activity of recentActivities(); track activity.id) {
+        <div class="activity-item">
+          <div
+            class="activity-dot"
+            [class]="'activity-dot--' + activity.status"
+          ></div>
+          <div class="activity-info">
+            <p class="activity-title">{{ activity.title }}</p>
+            <p class="activity-time">{{ activity.time }}</p>
+          </div>
+          <span class="activity-badge" [class]="'badge--' + activity.status">
+            {{ activity.status | titlecase }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

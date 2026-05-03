@@ -1,0 +1,76 @@
+@if (isOpen) {
+  <div class="overlay" (click)="onCancel()" role="presentation">
+    <div
+      class="dialog"
+      [class.dialog--danger]="config?.type === 'danger'"
+      (click)="$event.stopPropagation()"
+      role="alertdialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'dialog-title'"
+      [attr.aria-describedby]="'dialog-message'"
+    >
+      <!-- Icon -->
+      <div
+        class="dialog__icon"
+        [class]="'dialog__icon--' + (config?.type ?? 'danger')"
+      >
+        @if (config?.type === "danger") {
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        } @else {
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        }
+      </div>
+
+      <!-- Content -->
+      <div class="dialog__body">
+        <h3 id="dialog-title" class="dialog__title">{{ config?.title }}</h3>
+        <p id="dialog-message" class="dialog__message">
+          {{ config?.message }}
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="dialog__actions">
+        <button class="btn btn-secondary" (click)="onCancel()">
+          {{ config?.cancelLabel ?? "Cancel" }}
+        </button>
+        <button
+          class="btn"
+          [class.btn-danger]="config?.type === 'danger' || !config?.type"
+          [class.btn-primary]="config?.type === 'info'"
+          [disabled]="isProcessing"
+          (click)="onConfirm()"
+        >
+          @if (isProcessing) {
+            <app-loader size="sm"></app-loader>
+          }
+          {{ config?.confirmLabel ?? "Delete" }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
