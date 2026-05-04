@@ -10,9 +10,9 @@ import { AuthStateService } from "@core/services/auth-state.service";
 import { AuthService } from "@core/services/auth.service";
 import { ToastService } from "@core/services/toast.service";
 import { LoaderComponent } from "@shared/components/loader/loader.component";
-import { ToastComponent } from "@shared/components/toast/toast.component";
 import { ConfirmDialogConfig } from "@core/models";
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
+import { ToastComponent } from "@shared/components/toast/toast.component";
 
 @Component({
   selector: "app-dashboard-layout",
