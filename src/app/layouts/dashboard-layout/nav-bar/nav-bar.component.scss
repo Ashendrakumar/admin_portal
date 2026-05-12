@@ -1,0 +1,54 @@
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  &__app {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+}
+
+.topbar__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent-emerald);
+  animation: pulse 2s ease infinite;
+}
+
+.status-text {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}

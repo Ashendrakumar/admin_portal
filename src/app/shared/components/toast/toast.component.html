@@ -1,35 +1,46 @@
 <div class="toast-container" role="region" aria-label="Notifications">
-      @for (toast of toastService.toasts(); track toast.id) {
-        <div
-          class="toast toast--{{ toast.type }}"
-          role="alert"
-          [attr.aria-live]="toast.type === 'error' ? 'assertive' : 'polite'"
-        >
-          <div class="toast__icon">
-            @switch (toast.type) {
-              @case ('success') { <span>✓</span> }
-              @case ('error') { <span>✕</span> }
-              @case ('warning') { <span>⚠</span> }
-              @case ('info') { <span>ℹ</span> }
-            }
-          </div>
-          <div class="toast__content">
-            <p class="toast__title">{{ toast.title }}</p>
-            @if (toast.message) {
-              <p class="toast__message">{{ toast.message }}</p>
-            }
-          </div>
-          @if (toast.dismissible) {
-            <button
-              class="toast__close"
-              (click)="toastService.dismiss(toast.id)"
-              aria-label="Dismiss notification"
-            >✕</button>
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div
+      class="toast toast--{{ toast.type }}"
+      role="alert"
+      [attr.aria-live]="toast.type === 'error' ? 'assertive' : 'polite'"
+      (mouseover)="toastService.pauseTimer(toast.id)"
+    >
+      <div class="toast__icon">
+        @switch (toast.type) {
+          @case ("success") {
+            <span>✓</span>
           }
-          <div
-            class="toast__progress"
-            [style.animation-duration.ms]="toast.duration"
-          ></div>
-        </div>
+          @case ("error") {
+            <span>✕</span>
+          }
+          @case ("warning") {
+            <span>⚠</span>
+          }
+          @case ("info") {
+            <span>ℹ</span>
+          }
+        }
+      </div>
+      <div class="toast__content">
+        <p class="toast__title">{{ toast.title }}</p>
+        @if (toast.message) {
+          <p class="toast__message">{{ toast.message }}</p>
+        }
+      </div>
+      @if (toast.dismissible) {
+        <button
+          class="toast__close"
+          (click)="toastService.dismiss(toast.id)"
+          aria-label="Dismiss notification"
+        >
+          ✕
+        </button>
       }
+      <div
+        class="toast__progress"
+        [style.animation-duration.ms]="toast.duration"
+      ></div>
     </div>
+  }
+</div>

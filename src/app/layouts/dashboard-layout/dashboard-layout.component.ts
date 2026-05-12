@@ -13,6 +13,8 @@ import { LoaderComponent } from "@shared/components/loader/loader.component";
 import { ConfirmDialogConfig } from "@core/models";
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
 import { ToastComponent } from "@shared/components/toast/toast.component";
+import { NavBarComponent } from "./nav-bar/nav-bar.component";
+import { SideBarComponent } from "./side-bar/side-bar.component";
 
 @Component({
   selector: "app-dashboard-layout",
@@ -24,6 +26,8 @@ import { ToastComponent } from "@shared/components/toast/toast.component";
     ToastComponent,
     LoaderComponent,
     ConfirmDialogComponent,
+    NavBarComponent,
+    SideBarComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./dashboard-layout.component.html",

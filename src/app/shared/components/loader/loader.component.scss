@@ -1,0 +1,79 @@
+// --- Global Overlay ---
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 14, 26, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loader-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: spin 1.2s linear infinite;
+
+  &:nth-child(1) {
+    border-top-color: var(--color-accent-cyan);
+    animation-duration: 1.2s;
+  }
+  &--2 {
+    inset: 8px;
+    border-top-color: var(--color-primary);
+    animation-duration: 0.9s;
+    animation-direction: reverse;
+  }
+  &--3 {
+    inset: 16px;
+    border-top-color: var(--color-accent-amber);
+    animation-duration: 0.7s;
+  }
+}
+
+.loader-message {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+// --- Inline Spinner ---
+.spinner-inline {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  &--sm {
+    width: 14px;
+    height: 14px;
+    border-width: 1.5px;
+  }
+  &--lg {
+    width: 24px;
+    height: 24px;
+    border-width: 2.5px;
+  }
+}

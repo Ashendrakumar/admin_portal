@@ -16,7 +16,6 @@ import {
 } from "@angular/forms";
 import { User, UserFormData } from "@core/models";
 import { LoaderComponent } from "@shared/components/loader/loader.component";
-
 @Component({
   selector: "app-form-model",
   standalone: true,

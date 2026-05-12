@@ -15,7 +15,6 @@ import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "@core/services/auth.service";
 import { ToastService } from "@core/services/toast.service";
 import { LoaderComponent } from "@shared/components/loader/loader.component";
-
 @Component({
   selector: "app-register-page",
   standalone: true,

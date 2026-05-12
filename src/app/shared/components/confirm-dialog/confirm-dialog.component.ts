@@ -14,7 +14,6 @@ import { LoaderComponent } from "../loader/loader.component";
   standalone: true,
   imports: [CommonModule, LoaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-
   templateUrl: "./confirm-dialog.component.html",
   styleUrl: "./confirm-dialog.component.scss",
 })
