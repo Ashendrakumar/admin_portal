@@ -69,8 +69,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     confirmLabel: "Delete",
   };
 
-  // Table column definitions
-  readonly columns: TableColumn<User>[] = [
+  // Table column definitions // User
+  readonly columns: TableColumn<any>[] = [
     { key: "name", label: "User", sortable: false, width: "280px" },
     { key: "role", label: "Role", sortable: true, width: "100px" },
     { key: "department", label: "Department", sortable: true },
